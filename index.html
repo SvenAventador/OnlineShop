@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Книжный мир - интернет-магазин</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f8f5f0;
+            color: #2c2c2c;
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            background: linear-gradient(135deg, #2c1810 0%, #4a2c1a 100%);
+            color: #fff;
+            padding: 20px 30px;
+            border-radius: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            box-shadow: 0 4px 20px rgba(44, 24, 16, 0.3);
+            margin-bottom: 30px;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .logo span {
+            color: #e8c9a0;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .cart-icon {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255,255,255,0.1);
+            padding: 10px 18px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: background 0.3s;
+            text-decoration: none;
+            color: #fff;
+            border: none;
+            font-size: 16px;
+        }
+
+        .cart-icon:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        .cart-badge {
+            background: #e8c9a0;
+            color: #2c1810;
+            font-weight: 700;
+            font-size: 14px;
+            border-radius: 50%;
+            padding: 2px 8px;
+            min-width: 24px;
+            text-align: center;
+        }
+
+        .cart-total {
+            font-size: 14px;
+            opacity: 0.8;
+        }
+
+        .search-section {
+            background: #fff;
+            padding: 20px 25px;
+            border-radius: 14px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+            margin-bottom: 30px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .search-input {
+            flex: 1;
+            min-width: 200px;
+            padding: 12px 18px;
+            border: 2px solid #e8e0d8;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+            outline: none;
+            background: #faf8f6;
+        }
+
+        .search-input:focus {
+            border-color: #4a2c1a;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .filter-btn {
+            padding: 8px 18px;
+            border: 2px solid #e8e0d8;
+            border-radius: 20px;
+            background: #fff;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s;
+            color: #4a4a4a;
+        }
+
+        .filter-btn:hover {
+            border-color: #4a2c1a;
+            background: #f5f0eb;
+        }
+
+        .filter-btn.active {
+            background: #2c1810;
+            color: #fff;
+            border-color: #2c1810;
+        }
+
+        .search-btn {
+            padding: 12px 28px;
+            background: #2c1810;
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .search-btn:hover {
+            background: #4a2c1a;
+        }
+
+        /* BOOK GRID */
+        .books-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .book-card {
+            background: #fff;
+            border-radius: 14px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: 1px solid #f0ebe6;
+        }
+
+        .book-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+        }
+
+        .book-genre {
+            display: inline-block;
+            background: #f0ebe6;
+            padding: 2px 14px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #6a5a4a;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .book-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 4px;
+            color: #2c1810;
+        }
+
+        .book-author {
+            color: #6a5a4a;
+            font-size: 14px;
+            margin-bottom: 12px;
+        }
+
+        .book-price {
+            font-size: 22px;
+            font-weight: 700;
+            color: #2c1810;
+            margin-bottom: 14px;
+        }
+
+        .book-price span {
+            font-size: 14px;
+            font-weight: 400;
+            color: #8a7a6a;
+        }
+
+        .book-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .btn-add-cart {
+            flex: 1;
+            padding: 10px 16px;
+            background: #2c1810;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .btn-add-cart:hover {
+            background: #4a2c1a;
+        }
+
+        .btn-add-cart.added {
+            background: #2d6a4f;
+        }
+
+        .btn-add-cart.added:hover {
+            background: #1b4d3a;
+        }
+
+        .btn-add-cart:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #2c1810;
+            color: #fff;
+            padding: 16px 28px;
+            border-radius: 12px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.25);
+            transform: translateY(120px);
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            z-index: 1000;
+            font-weight: 500;
+            max-width: 350px;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .toast .toast-icon {
+            margin-right: 10px;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #8a7a6a;
+            display: none;
+        }
+
+        .empty-state h3 {
+            font-size: 22px;
+            color: #4a3a2a;
+            margin-bottom: 8px;
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(4px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+        }
+
+        .modal-overlay.open {
+            display: flex;
+        }
+
+        .modal {
+            background: #fff;
+            border-radius: 20px;
+            padding: 35px 40px;
+            max-width: 520px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            animation: modalSlide 0.3s ease;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        @keyframes modalSlide {
+            from {
+                transform: translateY(30px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f0ebe6;
+        }
+
+        .modal-header h2 {
+            font-size: 24px;
+            color: #2c1810;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 28px;
+            cursor: pointer;
+            color: #8a7a6a;
+            transition: color 0.3s;
+            padding: 0 8px;
+        }
+
+        .modal-close:hover {
+            color: #2c1810;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #f0ebe6;
+        }
+
+        .cart-item:last-child {
+            border-bottom: none;
+        }
+
+        .cart-item-info {
+            flex: 1;
+        }
+
+        .cart-item-title {
+            font-weight: 600;
+            color: #2c1810;
+        }
+
+        .cart-item-meta {
+            font-size: 14px;
+            color: #6a5a4a;
+        }
+
+        .cart-item-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .cart-item-price {
+            font-weight: 600;
+            color: #2c1810;
+        }
+
+        .btn-remove-item {
+            background: #f5ece8;
+            border: none;
+            border-radius: 6px;
+            padding: 4px 12px;
+            cursor: pointer;
+            color: #8a3a2a;
+            font-weight: 600;
+            transition: background 0.3s;
+        }
+
+        .btn-remove-item:hover {
+            background: #f0d8d0;
+        }
+
+        .cart-total-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 16px 0;
+            font-size: 18px;
+            font-weight: 700;
+            border-top: 2px solid #e8e0d8;
+            margin-top: 10px;
+        }
+
+        .cart-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 16px;
+            flex-wrap: wrap;
+        }
+
+        .btn-clear-cart {
+            padding: 12px 24px;
+            background: #f0e8e0;
+            border: none;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            color: #4a3a2a;
+            transition: background 0.3s;
+            flex: 1;
+        }
+
+        .btn-clear-cart:hover {
+            background: #e0d5ca;
+        }
+
+        .btn-checkout {
+            padding: 12px 28px;
+            background: #2c1810;
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+            flex: 2;
+        }
+
+        .btn-checkout:hover {
+            background: #4a2c1a;
+        }
+
+        .btn-checkout:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .cart-empty-msg {
+            text-align: center;
+            padding: 30px 0;
+            color: #8a7a6a;
+            font-size: 18px;
+        }
+
+        footer {
+            text-align: center;
+            color: #8a7a6a;
+            font-size: 14px;
+            padding: 30px 0 10px;
+            border-top: 1px solid #e8e0d8;
+            margin-top: 20px;
+        }
+
+        @media (max-width: 640px) {
+            .modal {
+                padding: 25px;
+                width: 95%;
+            }
+            header {
+                padding: 16px 20px;
+                flex-direction: column;
+                align-items: stretch;
+                text-align: center;
+            }
+            .header-actions {
+                justify-content: center;
+            }
+            .search-section {
+                flex-direction: column;
+            }
+            .search-input {
+                width: 100%;
+            }
+            .filter-group {
+                justify-content: center;
+            }
+            .books-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 15px;
+            }
+            .book-card {
+                padding: 14px;
+            }
+            .book-title {
+                font-size: 15px;
+            }
+        }
+
+        @media (max-width: 440px) {
+            .books-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <header>
+        <div class="logo">📚 <span>Книжный</span> мир</div>
+        <div class="header-actions">
+            <button class="cart-icon" id="cartToggle" aria-label="Открыть корзину">
+                🛒
+                <span class="cart-badge" id="cartCount">0</span>
+                <span class="cart-total" id="cartTotalHeader">0 ₽</span>
+            </button>
+        </div>
+    </header>
+
+    <section class="search-section">
+        <input type="text" class="search-input" id="searchInput" placeholder="🔍 Поиск по названию или автору..." />
+        <div class="filter-group" id="filterGroup">
+            <button class="filter-btn active" data-genre="all">Все</button>
+            <button class="filter-btn" data-genre="Детектив">🕵️ Детектив</button>
+            <button class="filter-btn" data-genre="Фантастика">🚀 Фантастика</button>
+            <button class="filter-btn" data-genre="Роман">❤️ Роман</button>
+            <button class="filter-btn" data-genre="Научная литература">📖 Научная</button>
+        </div>
+        <button class="search-btn" id="searchBtn">Найти</button>
+    </section>
+
+    <div class="books-grid" id="booksGrid"></div>
+
+    <div class="empty-state" id="emptyState">
+        <h3>📖 Книги не найдены</h3>
+        <p>Попробуйте изменить параметры поиска или фильтра</p>
+    </div>
+
+    <footer>
+        © 2026 Книжный мир — для студентов-тестировщиков с ❤️
+    </footer>
+</div>
+
+<div class="toast" id="toast">
+    <span class="toast-icon">✅</span>
+    <span id="toastMessage">Книга добавлена в корзину</span>
+</div>
+
+<div class="modal-overlay" id="cartModal">
+    <div class="modal">
+        <div class="modal-header">
+            <h2>🛒 Корзина</h2>
+            <button class="modal-close" id="cartClose">&times;</button>
+        </div>
+        <div id="cartItems">
+            <div class="cart-empty-msg">Корзина пуста</div>
+        </div>
+        <div class="cart-total-row">
+            <span>Итого:</span>
+            <span id="cartTotalModal">0 ₽</span>
+        </div>
+        <div class="cart-actions">
+            <button class="btn-clear-cart" id="clearCart">🗑 Очистить</button>
+            <button class="btn-checkout" id="checkoutBtn">📦 Оформить заказ</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    const books = [
+        { id: 1, title: "Убийство в Восточном экспрессе", author: "Агата Кристи", genre: "Детектив", price: 450 },
+        { id: 2, title: "1984", author: "Джордж Оруэлл", genre: "Фантастика", price: 390 },
+        { id: 3, title: "Гордость и предубеждение", author: "Джейн Остин", genre: "Роман", price: 410 },
+        { id: 4, title: "Краткая история времени", author: "Стивен Хокинг", genre: "Научная литература", price: 520 },
+        { id: 5, title: "Маленький принц", author: "Антуан де Сент-Экзюпери", genre: "Роман", price: 280 },
+        { id: 6, title: "Игра престолов", author: "Джордж Р. Р. Мартин", genre: "Фантастика", price: 650 },
+        { id: 7, title: "Десять негритят", author: "Агата Кристи", genre: "Детектив", price: 420 },
+        { id: 8, title: "Мы", author: "Евгений Замятин", genre: "Фантастика", price: 350 },
+        { id: 9, title: "Анна Каренина", author: "Лев Толстой", genre: "Роман", price: 560 },
+        { id: 10, title: "Стивен Хокинг. Жизнь среди звезд", author: "Китти Фергюсон", genre: "Научная литература", price: 480 },
+        { id: 11, title: "Сияние", author: "Стивен Кинг", genre: "Детектив", price: 510 },
+        { id: 12, title: "Солярис", author: "Станислав Лем", genre: "Фантастика", price: 370 },
+    ];
+
+    let cart = [];
+    let currentFilter = 'all';
+    let currentSearch = '';
+
+    const grid = document.getElementById('booksGrid');
+    const emptyState = document.getElementById('emptyState');
+    const cartBadge = document.getElementById('cartCount');
+    const cartTotalHeader = document.getElementById('cartTotalHeader');
+    const cartTotalModal = document.getElementById('cartTotalModal');
+    const cartItemsContainer = document.getElementById('cartItems');
+    const toast = document.getElementById('toast');
+    const toastMessage = document.getElementById('toastMessage');
+    const cartModal = document.getElementById('cartModal');
+    const cartToggle = document.getElementById('cartToggle');
+    const cartClose = document.getElementById('cartClose');
+    const clearCartBtn = document.getElementById('clearCart');
+    const checkoutBtn = document.getElementById('checkoutBtn');
+    const searchInput = document.getElementById('searchInput');
+    const searchBtn = document.getElementById('searchBtn');
+    const filterGroup = document.getElementById('filterGroup');
+
+    let toastTimeout = null;
+
+    function showToast(message, icon = '✅') {
+        toastMessage.textContent = message;
+        toast.querySelector('.toast-icon').textContent = icon;
+        toast.classList.add('show');
+        if (toastTimeout) clearTimeout(toastTimeout);
+        toastTimeout = setTimeout(() => {
+            toast.classList.remove('show');
+        }, 3000);
+    }
+
+    function renderBooks() {
+        let filtered;
+        if (currentFilter === 'all') {
+            filtered = books.filter(book => book.genre !== 'Научная литература');
+        } else {
+            filtered = books.filter(book => book.genre === currentFilter);
+        }
+
+        if (currentSearch) {
+            const searchLower = currentSearch.toLowerCase();
+            filtered = filtered.filter(book =>
+                book.title.toLowerCase().includes(searchLower)
+            );
+        }
+
+        if (filtered.length === 0) {
+            grid.innerHTML = '';
+            emptyState.style.display = 'block';
+            return;
+        }
+        emptyState.style.display = 'none';
+
+        grid.innerHTML = filtered.map(book => {
+            const inCart = false; 
+
+            return `
+                <div class="book-card" data-id="${book.id}">
+                    <div class="book-genre">${book.genre}</div>
+                    <div class="book-title">${book.title}</div>
+                    <div class="book-author">✍️ ${book.author}</div>
+                    <div class="book-price">${book.price} <span>₽</span></div>
+                    <div class="book-actions">
+                        <button class="btn-add-cart" data-id="${book.id}">
+                            🛒 В корзину
+                        </button>
+                    </div>
+                </div>
+            `;
+        }).join('');
+
+        document.querySelectorAll('.btn-add-cart').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const id = parseInt(this.dataset.id);
+                addToCart(id);
+            });
+        });
+    }
+
+    function addToCart(bookId) {
+        const book = books.find(b => b.id === bookId);
+        if (!book) return;
+
+        cart.push({ ...book });
+
+        showToast('Книга добавлена в корзину', '📚');
+        updateCartUI();
+        renderBooks();
+    }
+
+    function removeFromCart(bookId) {
+        if (cart.length > 0) {
+            cart.pop(); 
+        }
+        updateCartUI();
+        renderBooks();
+        showToast('Книга удалена из корзины', '🗑');
+    }
+
+    function clearCart() {
+
+    }
+
+    function getCartTotal() {
+        return 0; 
+    }
+
+    function updateCartUI() {
+        const count = cart.length;
+        const total = getCartTotal();
+        cartTotalHeader.textContent = total + ' ₽';
+        cartTotalModal.textContent = total + ' ₽';
+        renderCartItems();
+    }
+
+    function renderCartItems() {
+        if (cart.length === 0) {
+            cartItemsContainer.innerHTML = `<div class="cart-empty-msg">🛒 Корзина пуста</div>`;
+            checkoutBtn.disabled = true;
+            return;
+        }
+        checkoutBtn.disabled = false;
+
+        cartItemsContainer.innerHTML = cart.map((item, index) => {
+            const displayPrice = 0; 
+            return `
+                <div class="cart-item" data-id="${item.id}" data-index="${index}">
+                    <div class="cart-item-info">
+                        <div class="cart-item-title">${item.title}</div>
+                        <div class="cart-item-meta">${item.author} · ${item.genre}</div>
+                    </div>
+                    <div class="cart-item-actions">
+                        <span class="cart-item-price">${displayPrice} ₽</span>
+                        <button class="btn-remove-item" data-id="${item.id}">✕</button>
+                    </div>
+                </div>
+            `;
+        }).join('');
+
+        document.querySelectorAll('.btn-remove-item').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const id = parseInt(this.dataset.id);
+                removeFromCart(id);
+            });
+        });
+    }
+
+    function openCartModal() {
+        cartModal.classList.add('open');
+        renderCartItems();
+        cartTotalModal.textContent = '0 ₽'; 
+    }
+
+    function closeCartModal() {
+        cartModal.classList.remove('open');
+    }
+
+    cartToggle.addEventListener('click', openCartModal);
+    cartClose.addEventListener('click', closeCartModal);
+    cartModal.addEventListener('click', function(e) {
+        if (e.target === this) closeCartModal();
+    });
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') closeCartModal();
+    });
+
+    checkoutBtn.addEventListener('click', function() {
+        if (cart.length === 0) {
+            return;
+        }
+
+        showToast('Заказ оформлен! Спасибо за покупку!', '🎉');
+        cart = [];
+        updateCartUI();
+        renderBooks();
+        closeCartModal();
+    });
+
+    filterGroup.addEventListener('click', function(e) {
+        const btn = e.target.closest('.filter-btn');
+        if (!btn) return;
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentFilter = btn.dataset.genre;
+        renderBooks();
+    });
+
+    searchBtn.addEventListener('click', function() {
+        currentSearch = searchInput.value.trim();
+        renderBooks();
+    });
+
+    searchInput.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') {
+            currentSearch = this.value.trim();
+            currentFilter = 'all';
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            document.querySelector('[data-genre="all"]').classList.add('active');
+            renderBooks();
+        }
+    });
+
+    clearCartBtn.addEventListener('click', function() {
+
+    });
+
+    renderBooks();
+    updateCartUI();
+
+    console.log('📚 Книжный мир загружен!');
+    console.log('🎯 Удачи в поиске багов!');
+</script>
+</body>
+</html>
